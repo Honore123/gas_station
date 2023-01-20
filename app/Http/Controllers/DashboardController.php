@@ -50,4 +50,16 @@ class DashboardController extends Controller
 
         return view('dashboard', $data);
     }
+
+    public function saleOrderChart(){
+        $response = CustomerOrder::query()->where('order_status',1)->orderBy('id', 'DESC')->take(10)->get();
+    
+        return response()->json($response->reverse()->values());
+    }
+
+    public function expensesChart(){
+        $response = Expense::query()->orderBy('id', 'DESC')->take(10)->get();
+    
+        return response()->json($response->reverse()->values());
+    }
 }

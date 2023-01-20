@@ -34,6 +34,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <h4 class="card-title">Visualization graph</h4>
+                                <canvas id="expenses_chart"></canvas>
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <th>#</th>
@@ -80,5 +82,64 @@
                 })
             }
         })
+        $(document).ready(function(){
+            setInterval(function(){
+          
+        var url = "{{url('report/expenses/chart/'.request('start').'/'.request('end'))}}";
+        var dateTime = new Array();
+        var expensesData = new Array();
+            $.get(url, function(response){
+                response.forEach(function(data){
+                    dateTime.push(data.recorded_time);
+                    expensesData.push(data.amount);
+                });
+                var expensesChart = document.getElementById("expenses_chart").getContext('2d');
+
+                var expensesDiagram = new Chart(expensesChart, {
+                    type: 'line',
+                    data: {
+                        labels:dateTime,
+                        datasets: [{
+                            label: 'Expenses',
+                            data: expensesData,
+                            borderWidth: 3,
+                            borderColor: 'rgb(0, 127, 212)',
+                            fill:false,
+                            tension: 0.3,
+                        }]
+                    },
+                    options: {
+                        animation:{
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    userCallback: function(value, index, values) {
+                                        value = value.toString();
+                                        value = value.split(/(?=(?:...)*$)/);
+                                        value = value.join(',');
+                                        return value;
+                                    }
+                                }
+                            }],
+
+                            xAxes: [{
+                                gridLines: {
+                                    color: '#f2f3f8'
+                                },
+                                ticks: {
+                                    display: false //this will remove only the label
+                                }
+                            }]
+                        },
+                    }
+                });
+            });
+            },1000)
+
+        });
+    
     </script>
 @endpush

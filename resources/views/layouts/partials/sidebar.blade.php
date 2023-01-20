@@ -40,7 +40,7 @@
                 </li>
                 @endcan
                 @can('vendors.view')
-                <li class="nav-item  {{menuOpen('purchaseOrder')}} {{menuOpen('purchaseOrder/*')}} {{menuOpen('vendor')}} {{menuOpen('vendor/*')}}">
+                <li class="nav-item {{menuOpen('purchaseOrder/*')}} {{menuOpen('vendor')}} {{menuOpen('vendor/*')}}">
                     <a href="#" class="nav-link {{setActive('purchaseOrder')}} {{setActive('purchaseOrder/*')}} {{setActive('vendor')}} {{setActive('vendor/*')}}">
                         <i class="nav-icon fas fa-industry"></i>
                         <p>
@@ -56,12 +56,12 @@
                             </a>
                         </li>
                         @can('orders.view')
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{route('purchase-order.index')}}" class="nav-link {{setActive('purchaseOrder')}} {{setActive('purchaseOrder/*')}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Purchase Order</p>
                             </a>
-                        </li>
+                        </li> --}}
                         @endcan
                     </ul>
                 </li>

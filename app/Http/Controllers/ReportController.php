@@ -75,6 +75,12 @@ class ReportController extends Controller
             ->make(true);
 
     }
+    public function saleOrderChart(){
+        $response = CustomerOrder::query()->where('order_status',1)->where('created_at', '>=',request('start'))
+        ->where('created_at', '<=',request('end'))->orderBy('id', 'DESC')->take(10)->get();
+    
+        return response()->json($response->reverse()->values());
+    }
 
     public function expenses()
     {
@@ -87,6 +93,11 @@ class ReportController extends Controller
 
 
         return view('report.expenses', $data);
+    }
+
+    public function expensesChartAjax(){
+        $response = Expense::where('created_at', '>=',request('start'))->where('created_at', '<=',request('end'))->orderBy('id', 'DESC')->take(10)->get();
+        return response()->json($response->reverse()->values());
     }
 
     public function bestSelling()

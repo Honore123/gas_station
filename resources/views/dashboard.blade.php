@@ -71,6 +71,24 @@
 
             </div>
             <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Latest Sales Income</h4>
+                          <canvas id="latest_sales_income"></canvas>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title">Expenses</h4>
+                          <canvas id="expenses_chart"></canvas>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header border-0">
@@ -168,3 +186,118 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+         $(document).ready(function(){
+            var salesUrl = "{{url('dashboard/sales/chart')}}";
+            var dateTime = new Array();
+            var salesData = new Array();
+            $.get(salesUrl, function(response){
+                response.forEach(function(data){
+                    dateTime.push(data.recorded_time);
+                    salesData.push(data.total_amount);
+                });
+                var salesChart = document.getElementById("latest_sales_income").getContext('2d');
+
+                var ecgDiagram = new Chart(salesChart, {
+                    type: 'bar',
+                    data: {
+                        labels:dateTime,
+                        datasets: [{
+                            label: 'Sales',
+                            data: salesData,
+                            borderWidth: 3,
+                            borderColor: 'rgb(0, 127, 212)',
+                            fill:false,
+                            tension: 0.3,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        animation:{
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    userCallback: function(value, index, values) {
+                                        value = value.toString();
+                                        value = value.split(/(?=(?:...)*$)/);
+                                        value = value.join(',');
+                                        return value;
+                                    }
+                                }
+                            }],
+
+                            xAxes: [{
+                                gridLines: {
+                                    color: '#f2f3f8'
+                                },
+                                ticks: {
+                                    display: false //this will remove only the label
+                                }
+                            }]
+                        },
+                    }
+                });
+            });
+
+
+            var expensesUrl = "{{url('dashboard/expenses/chart')}}";
+            var dateTime = new Array();
+            var expensesData = new Array();
+            $.get(expensesUrl, function(response){
+                response.forEach(function(data){
+                    dateTime.push(data.created_at);
+                    expensesData.push(data.amount);
+                });
+                var expensesChart = document.getElementById("expenses_chart").getContext('2d');
+
+                var ecgDiagram = new Chart(expensesChart, {
+                    type: 'line',
+                    data: {
+                        labels:dateTime,
+                        datasets: [{
+                            label: 'Expenses',
+                            data: expensesData,
+                            borderWidth: 3,
+                            borderColor: 'rgb(0, 127, 212)',
+                            fill:false,
+                            tension: 0.3,
+                            
+                        }]
+                    },
+                    options: {
+                        animation:{
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    userCallback: function(value, index, values) {
+                                        value = value.toString();
+                                        value = value.split(/(?=(?:...)*$)/);
+                                        value = value.join(',');
+                                        return value;
+                                    }
+                                }
+                            }],
+
+                            xAxes: [{
+                                gridLines: {
+                                    color: '#f2f3f8'
+                                },
+                                ticks: {
+                                    display: false //this will remove only the label
+                                }
+                            }]
+                        },
+                    }
+                });
+            });
+        });
+    
+    </script>
+@endpush

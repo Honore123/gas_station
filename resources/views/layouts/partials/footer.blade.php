@@ -4,5 +4,5 @@
         Version: 1.0.0
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2021 <a href="https://adminlte.io" class="text-info">Nziza Crafts</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2022 <a href="/#" class="text-info">GPST</a>.</strong> All rights reserved.
 </footer>

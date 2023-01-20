@@ -17,8 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('barcode')->unique();
             $table->string('product_name');
-            $table->foreignId('category_id')->references('id')->on('product_categories')
-                ->onDelete(null);
+         
             $table->foreignId('material_id')->references('id')->on('materials')
                 ->onDelete(null);
             $table->integer('quantity');

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     {
         $user = User::firstOrCreate([
             'name'=>'Administrator',
-            'email'=>'admin@nziza.rw',
+            'email'=>'admin@gpst.rw',
             'password'=>Hash::make('password')
         ]);
         $role = Role::firstOrCreate(['name' => 'Administrator']);

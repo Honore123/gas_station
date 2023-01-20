@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,LogsActivity;
 
     protected $fillable = [
         'product_name',
@@ -26,6 +27,7 @@ class Product extends Model
     protected $casts = [
         'images' => 'array'
     ];
+    protected static $logUnguarded = true;
 
     public function category()
     {

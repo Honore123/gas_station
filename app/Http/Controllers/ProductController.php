@@ -18,10 +18,10 @@ class ProductController extends Controller
         if (request()->ajax()) {
             return datatables($product)
                 ->editColumn('image', function ($product) {
-                    $image = json_decode($product->images,true);
+                    $image = json_decode($product->images, true);
                     return '<img src="'.asset('storage/'.$image[0]).'" width="100" alt="image">';
                 })
-                ->editColumn('action','product.partials.action')
+                ->editColumn('action', 'product.partials.action')
                 ->rawColumns(['action','image'])
                 ->addIndexColumn()
                 ->make(true);
@@ -30,12 +30,11 @@ class ProductController extends Controller
     }
     public function add()
     {
-
         return view('product.add', [
                 'categories' => ProductCategory::all(),
-                'materials' => Material::all(),
+         'materials' => Material::all(),
                 'vendors' => Vendor::all(),
-                'barcode' => rand(11,99),
+                'barcode' => rand(11, 99),
         ]);
     }
     public function store()
@@ -57,13 +56,13 @@ class ProductController extends Controller
         }
         Product::create($product);
 
-        return redirect()->back()->with('success','Product added successfully');
+        return redirect()->back()->with('success', 'Product added successfully');
     }
     public function imageUpload(Request $request)
     {
         $file = $request->file('file');
         $name = uniqid() . '_' . trim($file->getClientOriginalName());
-        $file->storeAs('products/images',$name);
+        $file->storeAs('products/images', $name);
 
         return response()->json([
             'name' => $name,
@@ -104,15 +103,14 @@ class ProductController extends Controller
         ]);
         if (request()->input('image')) {
             $images = json_decode($product->images, true);
-            foreach ($images as $image)
-            {
+            foreach ($images as $image) {
                 Storage::delete('public/products/images/'.$image);
             }
             $data['images'] = json_encode(request()->input('image'));
         }
         $product->update($data);
 
-        return redirect(route('product.index'))->with('success','Product '.$product->product_name . ' updated successfully');
+        return redirect(route('product.index'))->with('success', 'Product '.$product->product_name . ' updated successfully');
     }
 
     public function destroy(Product $product)

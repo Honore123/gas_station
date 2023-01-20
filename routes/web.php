@@ -14,7 +14,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\UploadProductController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,7 +30,10 @@ use App\Http\Controllers\UploadProductController;
 */
 
 Route::get('/', [DashboardController::class,'index'])->middleware(['auth'])->name('dashboard');
-
+Route::prefix('dashboard')->middleware(['auth'])->group(function(){
+    Route::get('sales/chart', [DashboardController::class,'saleOrderChart'])->name('dashboard.sales.chart');
+    Route::get('expenses/chart', [DashboardController::class,'expensesChart'])->name('dashboard.expenses.chart');
+});
 Route::prefix('product')->middleware(['auth','can:products.view'])->group(function(){
     Route::get('',[ProductController::class,'index'])->name('product.index');
     Route::get('add',[ProductController::class,'add'])->middleware(['can:products.add'])->name('product.add');
@@ -77,12 +83,14 @@ Route::prefix('report')->middleware(['auth'])->group(function (){
     Route::prefix('saleOrder')->group(function () {
         Route::get('',[ReportController::class,'saleOrder'])->name('report.saleOrder');
         Route::get('ajax',[ReportController::class,'saleOrderAjax'])->name('sales.ajax');
+        Route::get('chart/{start}/{end}', [ReportController::class, 'saleOrderChart'])->name('sales.chart');
     });
     Route::get('/summarized',[ReportController::class,'summarized'])->name('report.summarized');
     Route::get('/purchaseOrder',[ReportController::class,'purchaseOrder'])->name('report.purchaseOrder');
 
     Route::get('/bestSelling',[ReportController::class,'bestSelling'])->name('report.bestSelling');
     Route::get('/expenses',[ReportController::class,'expenses'])->name('report.expenses');
+    Route::get('/expenses/chart/{start}/{end}',[ReportController::class,'expensesChartAjax'])->name('report.chart');
 });
 Route::prefix('settings')->middleware(['auth'])->group(function (){
     Route::prefix('store')->middleware(['can:other.change_settings'])->group(function (){
@@ -123,4 +131,10 @@ Route::prefix('settings')->middleware(['auth'])->group(function (){
     });
     Route::get('/logs', [ActivityLogController::class,'index'])->middleware(['can:other.change_settings'])->name('logs.index');
 });
+Route::prefix('device')->group(function(){
+    Route::get('', [DeviceController::class, 'index']);
+    Route::get('card', [DeviceController::class, 'fetchCard']);
+    Route::get('cardTapped', [DeviceController::class, 'getCard']);
+});
+
 require __DIR__.'/auth.php';

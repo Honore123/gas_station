@@ -37,14 +37,14 @@
                                 @forelse($activities as $activity)
                                     <tr>
                                         <td class="text-middle">{{$loop->iteration++}}</td>
-                                        <td class="text-middle">{{$activity->causer->name}}</td>
+                                        <td class="text-middle">{{$activity->causer_id ==  null ? "Device" : $activity->causer->name}}</td>
                                         <td class="text-middle">{{$activity->description}}</td>
-                                        <td class="text-middle">{{$activity->subject->names}}</td>
+                                        <td class="text-middle">{{$activity->subject->names ?$activity->subject->names: $activity->subject->description }}</td>
                                         <td class="text-middle">{{date('d/m/Y,  H:i', strtotime($activity->created_at))}}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">No activity yet</td>
+                                        <td colspan="5" class="text-center">No activity yet</td>
                                     </tr>
                                 @endforelse
                                 </tbody>

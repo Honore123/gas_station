@@ -2,7 +2,7 @@
         <div class="login-box">
             <div class="card card-outline card-info rounded-0">
                 <div class="card-header text-center">
-                    <a href="#" class="h1 text-info"><b class="text-dark">Nziza</b>CRAFTS</a>
+                    <a href="#" class="h1 text-info">GP<b class="text-dark">ST</b></a>
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">Sign in to start your session</p>

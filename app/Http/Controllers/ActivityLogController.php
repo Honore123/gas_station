@@ -10,7 +10,7 @@ class ActivityLogController extends Controller
     public function index()
     {
         return view('activity.index', [
-            'activities' => Activity::with(['causer'])->get(),
+            'activities' => Activity::with(['causer'])->orderBy('id','DESC')->get(),
         ]);
     }
 }

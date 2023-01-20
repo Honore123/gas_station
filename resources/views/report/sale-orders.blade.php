@@ -43,7 +43,26 @@
 {{--                                        </div>--}}
 {{--                                    </div>--}}
                                     <div class="row">
-                                        <div class="col-md-9  py-2 my-4 table-responsive">
+                                        <div class="col-md-8">
+                                            <div class="card-body pl-0">
+                                                <h4 class="card-title">Visualization graph</h4>
+                                                <canvas id="sales_orders_chart"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="display-5">Total Revenue</label>
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Total amount: </td>
+                                                        <td>{{$revenue}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12  py-2 my-4 table-responsive">
                                             <table class="table table-striped table-bordered table-hover" id="sale-report-table">
                                                 <thead>
                                                 <th>#</th>
@@ -73,17 +92,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="col-md-3">
-                                            <h4>Total Revenue</h4>
-                                            <table class="table table-striped">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Total amount: </td>
-                                                        <td>{{$revenue}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        
                                     </div>
                                     <div class="row mt-2 mb-2">
                                         <div class="col-md-12 text-right">
@@ -140,6 +149,66 @@
                 { "data": 'total_amount', "name": 'total_amount'},
             ],
         })
+        $(document).ready(function(){
+            setInterval(() => {
+                var start = '{{request('start')}}'
+            var end = '{{request('end')}}'
+            if(start != '' || end != ''){
+                var url = "{{url('report/saleOrder/chart/'.request('start').'/'.request('end'))}}";
+        var dateTime = new Array();
+        var salesData = new Array();
+            $.get(url, function(response){
+                response.forEach(function(data){
+                    dateTime.push(data.created_at);
+                    salesData.push(data.total_amount);
+                });
+                var salesChart = document.getElementById("sales_orders_chart").getContext('2d');
+
+                var salesDiagram = new Chart(salesChart, {
+                    type: 'line',
+                    data: {
+                        labels:dateTime,
+                        datasets: [{
+                            label: 'Sales',
+                            data: salesData,
+                            borderWidth: 3,
+                            borderColor: 'rgb(0, 127, 212)',
+                            fill:false,
+                            tension: 0.3,
+                        }]
+                    },
+                    options: {
+                        animation:{
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    userCallback: function(value, index, values) {
+                                        value = value.toString();
+                                        value = value.split(/(?=(?:...)*$)/);
+                                        value = value.join(',');
+                                        return value;
+                                    }
+                                }
+                            }],
+
+                            xAxes: [{
+                                gridLines: {
+                                    color: '#f2f3f8'
+                                },
+                                ticks: {
+                                    display: false //this will remove only the label
+                                }
+                            }]
+                        },
+                    }
+                });
+            });
+            }
+            }, 1000);
+        });
 
     </script>
 @endpush

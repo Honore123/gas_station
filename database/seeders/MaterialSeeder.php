@@ -14,7 +14,7 @@ class MaterialSeeder extends Seeder
      */
     public function run()
     {
-        collect(['Bronze','Silver'])->each(function ($material) {
+        collect(['Tyres','Engine Oil'])->each(function ($material) {
             Material::firstOrCreate([
                 'material_type'=>$material
             ]);

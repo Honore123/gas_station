@@ -15,8 +15,7 @@ class CreateSaleOrdersTable extends Migration
     {
         Schema::create('sale_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_orders_id')->references('id')->on('customer_orders')
-                ->onDelete(null);
+            
             $table->foreignId('product_id')->references('id')->on('products')
                 ->onDelete(null);
             $table->integer('quantity');

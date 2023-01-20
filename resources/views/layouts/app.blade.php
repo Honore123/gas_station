@@ -5,10 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'MyApp') }}</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <link rel="preconnect" href="https://fonts.googleapis.com"> 
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap" rel="stylesheet">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{asset('assets/fontawesome-free/css/all.min.css')}}">
@@ -20,6 +22,9 @@
         <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
 
         <style>
+            body{
+                font-family: 'Nunito', sans-serif;
+            }
             .text-middle{
                 vertical-align: middle !important;
             }
@@ -55,6 +60,7 @@
         <script src="{{asset('assets/sweetalert2/sweetalert2.min.js')}}"></script>
         <script src="{{asset('assets/dropzone/min/dropzone.min.js')}}"></script>
         <script src="{{asset('js/adminlte.min.js')}}"></script>
+        <script src="{{asset('assets/chart.js/Chart.min.js')}}"></script>
         @stack('scripts')
     </body>
 </html>
